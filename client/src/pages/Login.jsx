@@ -54,7 +54,6 @@ const Login = () => {
             const username = response?.data?.username
 
             setAuth({ username, roles, accessToken });
-
             setUser('');
             setPwd('');
             // setSuccess(true);
@@ -120,9 +119,9 @@ const Login = () => {
                         </div>
                     </form>
                     <p>
-                        Need an Account?<br />
+                        Necesitas una cuenta?<br />
                         <span className="line">
-                            <Link  to="/register">Sign up</Link>
+                            <Link  to="/register">Registrarse</Link>
                         </span>
                     </p>
                 </section>

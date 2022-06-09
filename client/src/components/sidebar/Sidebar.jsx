@@ -53,12 +53,12 @@ const Sidebar = () => {
     const location = useLocation()
 
     useEffect(() => {
-        if(location.pathname === "/dash"){
-            const curPath = location.pathname.split('/dash')[1]
+        if(location.pathname === "/"){
+            const curPath = location.pathname.split('/')[1]
             const activeItem = contexto.auth.roles == 5150 ? sidebarNav.findIndex(item => item.section === curPath) : sidebarNavEditor.findIndex(item => item.section === curPath)
             setActiveIndex(curPath.length === 0 ? 0 : activeItem)
         }else{
-            const curPath = location.pathname.split('dash/')[1]
+            const curPath = location.pathname.split('/')[1]
             const activeItem = contexto.auth.roles == 5150 ? sidebarNav.findIndex(item => item.section === curPath) : sidebarNavEditor.findIndex(item => item.section === curPath)
             setActiveIndex(curPath.length === 0 ? 0 : activeItem)
 

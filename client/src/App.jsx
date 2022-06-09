@@ -43,12 +43,12 @@ function App() {
                     
                     <Route element={< PersistLogin/>}>
                                 {/* PONEMOS LOS 3 ROLES YA QUE NO HAY FORMA ENVIAR 2 CODIGO COMO EN EL TUTORIAL / TAMBIEN FUNIONA CAMBIAR EN EL MODEL Y PONER DOS ROLES USER Y EDITOR O ADMIN  */}
-                            <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Editor, ROLES.Admin]} />}>
-                            {/* <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}> */}
-                                <Route path="/" element={<Home />} />
-                            </Route>
 
-                            <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
+                            {/* <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Editor, ROLES.Admin]} />}>
+                                <Route path="/" element={<Home />} />
+                            </Route> */}
+
+                            {/* <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
                                 <Route path="editor" element={<Editor />} />
                             </Route>
 
@@ -59,12 +59,13 @@ function App() {
 
                             <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
                                  <Route path="lounge" element={<Lounge />} />
-                            </Route> 
+                            </Route>  */}
 
                             <Route element={<RequireAuth allowedRoles={[ROLES.Editor, ROLES.Admin]} />}>
-                                <Route path="/dash" element={<MainLayout />}>
-                                    <Route index element={<Dashboard />} />
-                                    <Route path="patients" element={<Patients />} />
+                                <Route path="/" element={<MainLayout />}>
+                                    {/* <Route index element={<Dashboard />} /> */}
+                                    <Route index element={<Patients />} />
+                                    {/* <Route path="patients" element={<Patients />} /> */}
                                     <Route path="detail/:id" element={<Detail />} />
                                     <Route path="appointments" element={<Demo />} />
                                     
