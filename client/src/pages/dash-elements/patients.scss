@@ -1,0 +1,36 @@
+.insertarHome{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color:#E6E7E8;
+  padding: 25px;
+  width: 400px !important;
+  max-height: 100vh;
+  overflow-y: auto    
+}
+  .patients{
+    // margin-top: -10px;
+
+
+    .insertar{
+
+      background: #1AB188;
+
+
+    }
+    .insertar:hover{
+      background-color:#23272A;
+      color: #ffffff;
+    }
+    
+    @media only screen and (max-width: 425px){
+        .insertarHome{  
+          width: 280px !important;     
+      } 
+    }
+    
+  } 
+ 
+  
+  

@@ -1,0 +1,30 @@
+{
+  "short_name": "Dental App",
+  "name": "Dental App by WMB",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },  
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "lang":"es-ES", 
+  "start_url": ".",
+  "display_override": ["standalone", "fullscreen"],
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#24333C",
+  "categories":["productivity"],
+  "description": "Dental App developed by Web Master Bolivia",
+  "dir": "ltr"
+}

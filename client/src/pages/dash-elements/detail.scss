@@ -1,0 +1,87 @@
+.detalle{
+  .insertar{
+    background: #1AB188;
+    font-weight: bold ;
+    border: 1px black solid ; 
+    margin-top: 30px ;
+  }
+  .insertar:hover{
+    background-color:#23272A;
+    color: #ffffff;
+  }
+  #dPaciente{
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    padding: 50px;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+  }
+  .card{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    /* border: 1px red solid; */
+    align-content: left;
+    margin: 0 auto;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    border-radius: 9px; 
+}
+
+.card-header{
+    height: 30%;
+    background: #23272A;
+    color: #FFFFFF;
+    text-align: center;
+    font-weight: 500;
+    border-top-right-radius: 9px;
+    border-top-left-radius: 9px;
+    padding: 5px;
+}
+    
+.card-header{
+    font-size: 20px;
+}
+
+.pagos{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  
+  
+}
+
+
+
+.odonto{
+
+  // margin-left: 20%;
+  
+}
+  .infoPaciente{
+    margin-left: 2px;
+    margin-right: 25px;
+  }
+
+@media only screen and (max-width: 425px){
+.check{
+  margin: -7px !important; 
+  margin-top: 10px !important; 
+  }
+  .insertarHome{
+
+    width: 280px !important;
+} 
+#dPaciente{
+
+  padding: 30px;
+}
+}
+
+}
+
+
+
+
+
+
+
+

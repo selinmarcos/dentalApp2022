@@ -1,0 +1,31 @@
+
+  .patients{
+    // margin-top: -40px;
+  } 
+  #insertarHome{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color:#E6E7E8;
+    padding: 25px;
+    width: 400px !important;
+    max-height: 100vh;
+    overflow-y: auto;
+    // border-radius: 10px;
+  }
+  
+  @media only screen and (max-width: 425px){
+      // .check{
+      // margin: -7px !important; 
+      // margin-top: 10px !important; 
+      // }
+      #insertarHome{
+  
+        width: 280px !important;
+    
+    
+    } 
+  }
+  
+  
