@@ -7,7 +7,6 @@ const createTreatment =  async (req, res) => {
     console.log('ME ESTOY EJECUTANDO DETALLE PACIENTE')
     try {
          console.log(req.body.idP)
-        // var idP1 = mongoose.Types.ObjectId(req.body.idP)
         
         const trat = new Treatment({
             idPaciente: req.body.idP,
@@ -17,6 +16,8 @@ const createTreatment =  async (req, res) => {
             total: req.body.total,
             acuenta: req.body.acuenta,
             saldo: req.body.saldo,
+            estado: req.body.estado,
+            odonto: req.body.odonto
            
         })
     
@@ -96,12 +97,14 @@ const editTreatment = async (req, res) => {
         fecha: req.body.fecha,
         total: req.body.total,
         acuenta: req.body.acuenta,
-        saldo: req.body.saldo
+        saldo: req.body.saldo,
+        estado: req.body.estado,
+        odonto: req.body.odonto
         
     }
-    //console.log(req.params.id)
+ 
      await Treatment.updateOne({_id:ObjectId(req.params.id)},{$set:trat}) 
-  
+            console.log(req.body.odonto)
             //res.send(results)
             //res.json(filas)
             res.json({

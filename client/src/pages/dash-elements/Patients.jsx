@@ -153,7 +153,7 @@ const Patients = () => {
       setData(data.concat(response.data));
       abrirCerrarModalInsertar();
       
-      history(`/dash/detail/${response.data._id}`)
+      history(`/detail/${response.data._id}`)
       // window.location.reload();
     }).catch(error=>{
       console.log(error);
@@ -204,7 +204,7 @@ const Patients = () => {
 
  const detallePaciente = (artista) =>{
     console.log(artista._id)
-    history(`/dash/detail/${artista._id}`)
+    history(`/detail/${artista._id}`)
  }
 
 
@@ -371,16 +371,17 @@ const Patients = () => {
               },
             }}
             localization={{
-              header:{
+              header:{  
                 actions: "Acciones"
               },
               body: {
                 emptyDataSourceMessage: (
                   <CircularProgress />
                 ),
-              // toolbar: {
-              //     searchTooltip: 'Buscar'
-              // },
+              toolbar: {
+                  searchTooltip: "Buscar",
+                  searchPlaceholder: "Buscar"
+              },
             },
               
             }}

@@ -97,6 +97,7 @@ const EditingOptionsSelector = ({
 
 export default () => {
 
+  const local = {locale:'es-ES'}
   const APPOINTMENTS_URL = '/appointments';
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = React.useState([]);
@@ -247,8 +248,8 @@ const peticionPost=async(added)=>{
         <Scheduler
           data={data}
           // height={600}
-          //ERROR SLOW FIX
-          // locale={{locale:'es-ES'}}
+          // //ERROR SLOW FIX
+          locale={local}
       
         >
           <ViewState

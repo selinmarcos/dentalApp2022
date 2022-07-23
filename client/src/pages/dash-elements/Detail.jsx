@@ -11,21 +11,13 @@ import FormLabel from '@mui/material/FormLabel';
 import AddIcon from '@material-ui/icons/Add'
 import CircularProgress from '@mui/material/CircularProgress';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-
+import Checkbox from '@mui/material/Checkbox';
+import Switch from '@mui/material/Switch';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import dataInsertar from '../../constants/dataOdontogramInsertar'
 
 import Odontogram from './odontogram/Odontogram'
-
-const columns= [
-  { title: "N°", render: rowData => rowData.tableData.id + 1, width:'4%' },
-  { title: 'Tratamiento', field: 'tratamiento' },
-  { title: 'Descripcion', field: 'descripcion' },
-  { title: 'Fecha', field: 'fecha'},
-  { title: 'A/Cuenta', field: 'acuenta', type: 'numeric'},
-  { title: 'Saldo', field: 'saldo', type: 'numeric'},
-  { title: 'Total (Bs)', field: 'total', type: 'numeric'}
-  // { title: 'Estado', field: ''}
-  
-];
 
 
 const DETAIL_URL = '/treatments/'
@@ -75,10 +67,10 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const Detail = () => {
+ 
     const axiosPrivate = useAxiosPrivate();
 
-  const {id} = useParams()
-    // const [checked, setChecked] = useState(false); 
+    const {id} = useParams()
 
     const [data, setData]= useState([]); //state pacientes
     const [dataT, setDataT]= useState([]); //state tratamientos
@@ -99,6 +91,9 @@ const Detail = () => {
     const Numero2E = useRef(null)
 
     const styles= useStyles();
+
+
+
     const estadoInicial = {
       idP:id,
       _id:"",
@@ -107,8 +102,9 @@ const Detail = () => {
       total: "",
       acuenta:"",
       saldo:"",
-      fecha: getCurrentDate()
-      // estado: "",
+      fecha: getCurrentDate(),
+      estado: false,
+      odonto: undefined
     }
     const [paciente, setPaciente]=useState({
         idP:id,
@@ -118,10 +114,43 @@ const Detail = () => {
         total: "",
         acuenta:"",
         saldo:"",
-        fecha: ""
+        fecha: "",
+        estado: false,
+        odonto: undefined //enviar aqui ?
       })
 
-   
+      const columns= [
+        { title: "N°", render: rowData => rowData.tableData.id + 1, width:'4%' },
+        { title: 'Tratamiento', field: 'tratamiento' },
+        { title: 'Descripcion', field: 'descripcion' },
+        { title: 'Fecha', field: 'fecha'},
+        { title: 'A/Cuenta', field: 'acuenta', type: 'numeric'},
+        { title: 'Saldo', field: 'saldo', type: 'numeric'},
+        { title: 'Total (Bs)', field: 'total', type: 'numeric'},
+        { title: 'Estado',field: "estado",
+        editable: false,
+        render: (rowData) =>
+          rowData && (
+            <button style={{ fontFamily: "Helvetica",backgroundColor: rowData.estado ?  "#1AB188": "#F24E4F" , borderRadius:"5px", padding: "3px"}}
+              color="secondary"
+              // onClick={() => {
+              //   console.log(rowData)
+              //   setPaciente(prevState=>({
+              //     ...prevState,
+              //     estado: !prevState.estado
+              //   }));  
+
+              // }}
+            >
+              {
+                rowData.estado ? "CANCELADO" : "PENDIENTE"
+                
+              }
+              
+            </button>
+          )}
+        
+      ];
 
     const peticionGet=async()=>{
         await axiosPrivate.get(GET_PATIENT+id)
@@ -136,7 +165,7 @@ const Detail = () => {
     const peticionGetT=async()=>{
       await axiosPrivate.get(DETAIL_URL+id)
       .then(response=>{
-      //  console.log(response.data)
+      console.log(response.data)
        setDataT(response.data);
       }).catch(error=>{
         console.log(error);
@@ -149,7 +178,7 @@ const Detail = () => {
           console.log(paciente)
           setDataT(dataT.concat(response.data));
           // abrirCerrarModalInsertar();
-          // setPaciente(estadoInicial)
+          setPaciente(estadoInicial)
           setMostrar((prev) => !prev)
           
 
@@ -175,10 +204,10 @@ const Detail = () => {
         })
       }
 
-
+        
       const peticionPut=async()=>{
         
-        console.log("edit")
+        console.log(dataT)
         await axiosPrivate.put(DETAIL_URL+paciente._id, paciente)
         .then(response=>{
           var dataNueva= dataT;
@@ -191,10 +220,13 @@ const Detail = () => {
               artista.total=paciente.total;
               artista.acuenta=paciente.acuenta;
               artista.saldo=paciente.saldo;
+              artista.estado=paciente.estado
+              artista.odonto=paciente.odonto
 
             }
           });
           setDataT(dataNueva);
+          setPaciente(estadoInicial)//reseteamos
           setMostrarEditar((prev) => !prev)
 
         }).catch(error=>{
@@ -202,20 +234,37 @@ const Detail = () => {
         })
       }  
 
+    function getOdontogramData(name){
+        //con esta funcion enviamos datos de hijo a padre.
+        console.log(name)
 
+        setPaciente(prevState=>({
+          ...prevState,
+          odonto: name
+        }));  
+ 
+    }  
     const handleSubmit = (e) =>{
-
-      e.preventDefault()
+      e.preventDefault()     
       peticionPost()
     }  
 
     const handleChange=e=>{
-            const {name, value}=e.target;
+
+      // if(e.target.type === 'checkbox'){
+      //   let checkboxValue = e.target.checked ? true : false
+      //   console.log(checkboxValue)
+      //   setPaciente(prevState =>({
+      //       ...prevState,
+      //      [e.target.name]: checkboxValue
+      //   }))
+      // }
+
+            const {name, value, type, checked}=e.target;
             setPaciente(prevState=>({
               ...prevState,
-              [name]: value
+              [name]: type === 'checkbox' ? checked : value
             })); 
-
          
               // console.log("no tendrias que entrar aqui")
               if(name == 'acuenta' || name == 'total'){
@@ -227,7 +276,8 @@ const Detail = () => {
                   ...prevState,
                   saldo: n1 - n2
                 }));               
-              }               
+              }   
+                        
        }
       //hay dos handleChanges debido a que no se pudo identificar de donde provenia cada useRef Num1E y Numero1E... 
     const handleChangeEditar=e=>{
@@ -258,11 +308,17 @@ const Detail = () => {
     
 
       const seleccionarArtista=(artista, caso)=>{
-        setPaciente(artista);
+        
+        setPaciente(artista); 
+       
         if(caso==="Editar"){
-          // abrirCerrarModalEditar()
+          console.log('EDITAR')
+          // setPaciente(estadoInicial)
           setMostrarEditar((prev) => !prev)
-          console.log("aquiiiiiiiiiiiiiiiii")
+          // peticionGetT();
+         
+          // setPaciente(paciente)
+
         }
         else if(caso==="Ver"){
           abrirCerrarModalVer()
@@ -293,6 +349,7 @@ const Detail = () => {
         </div>
       )
 
+console.log(paciente)
 
     return (
       <div className='detalle'>        
@@ -302,8 +359,6 @@ const Detail = () => {
             </div>
             <div className="card">
             <div className="container">
-              {/* <strong>ID: </strong>
-                        <span>{data._id}</span> */}
               <strong>Nombre: </strong>
               <span className='infoPaciente'> {data.nombre}</span>
               <strong>Celular: </strong>
@@ -338,14 +393,14 @@ const Detail = () => {
           className="insertar"
           onClick={() =>{
              setMostrar((prev) => !prev)
-             setPaciente(estadoInicial)
+             setPaciente(estadoInicial) //ES CLAVE PARA LIMPIAR ODONTOGRAM
             }}
         >
           {" "}
           <AddIcon /> Nuevo Tratamiento
         </Button>
         <br />
-    
+     
 
           {/* INSERTAR */}
         <form onSubmit={handleSubmit} id="dPaciente" style={{ display: mostrar ? "" : "none" }}>
@@ -427,16 +482,38 @@ const Detail = () => {
                 variant="outlined"
                 focused
               />
-              <br />
             </div>
+
+            <br />
+            <Stack direction="row" spacing={1} alignItems="center"> 
+              <Typography>Pendiente</Typography>
+                  <Switch
+                    checked={paciente.estado}
+                    name='estado'
+                    onChange={handleChange}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                    type="checkbox"
+                    id='checkState'
+                    color="success"
+                  />
+              <Typography>Cancelado</Typography>
+            </Stack>
+            {/* <input type="checkbox" id='checkState' checked={paciente.estado} name='estado' onChange={handleChange}/> */}
+            {/* <label htmlFor="checkState">CANCELADO</label> */}
 
       
             <br />
             <br />
             <div className='odonto'>  
-            <h4>Odontograma: </h4>  
-            <br />         
-              {/* <Odontogram />  */}
+              <h4>Odontograma: </h4>  
+              <br /> 
+              {             
+                paciente.odonto == undefined ?
+                              <Odontogram getData={getOdontogramData} estadoPrueba={dataInsertar} /> 
+                            :
+                            console.log('DO NOT EXCUTE INSERTAR ODONTOGRAM')
+              }      
+
             </div>
          
             <br />
@@ -467,13 +544,6 @@ const Detail = () => {
             />
             <br />
             <br />
-       
-            {/* <TextField
-              className={styles.inputMaterial}
-              label="Descripcion"
-              name="descripcion"
-              onChange={handleChange}
-            /> */}
             
             <TextField
      
@@ -538,22 +608,40 @@ const Detail = () => {
                 value={paciente&&paciente.saldo}
                 variant="outlined"
               />
-
               <br />
-            </div>
 
-      
+            </div>
+            <br />
+            <Stack direction="row" spacing={1} alignItems="center"> 
+              <Typography style={{fontFamily:"roboto", fontWeight:"500"}}>Pendiente</Typography>
+                  <Switch
+                    checked={paciente.estado}
+                    name='estado'
+                    onChange={handleChange}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                    type="checkbox"
+                    id='checkState'
+                    color="success"
+                  />
+              <Typography style={{fontFamily:"roboto", fontWeight:"500"}}>Cancelado</Typography>
+            </Stack>      
             <br />
             <br />
-            <div className='odonto'>             
-              {/* <Odontogram /> */}
-              <h4>aqui va el odontograma</h4>
+            <div className='odonto'> 
+            <h4>Odontograma Editar:</h4> 
+              {/* { console.log(paciente.odonto)} */}
+              {
+              paciente.odonto != undefined ?<Odontogram getData={getOdontogramData} estadoPrueba={paciente&&paciente.odonto}/> : console.log('DO NOT EXECUTE EDITAR ODONTOGRAM')
+              }
+          
             </div>
          
             <br />
             <div align="right">
               <Button color="primary" onClick={()=>peticionPut()}>Editar</Button>
-              <Button onClick={()=>setMostrarEditar(prev => !prev)}>Cancelar</Button>
+              <Button onClick={()=>{
+                setPaciente(estadoInicial)
+                setMostrarEditar(prev => !prev)}}>Cancelar</Button>
             </div>
           </div>
         </form>
@@ -618,6 +706,14 @@ const Detail = () => {
                   "No hay registros ",
               },
             }}
+          //   //PARA EL BOTON DE ESTADO
+          //   components={{
+          //     Action: (props) => (
+          //         <button onClick={(event) => props.action.onClick(event, props.data)}>
+          //             Custom Button
+          //         </button>
+          //     ),
+          // }}
           />
         </div> 
         {/* <Modal open={modalInsertar} onClose={abrirCerrarModalInsertar}>

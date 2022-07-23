@@ -1,20 +1,26 @@
 import React from 'react';
 import Tooth from './Tooth';
 
-function Teeth({ start, end, x, y, handleChange }) {
+function Teeth({ start, end, x, y, handleChange, estadoPrueba }) {
     let tooths = getArray(start, end);
-
+  
     return (
         <g transform="scale(1.4)" id="gmain">
+       
             {
-                tooths.map((i) =>
-                    <Tooth onChange={handleChange}
+                tooths.map((i) =>              
+              
+                    <Tooth               
+                        onChange={handleChange}
                         key={i}
                         number={i}
                         positionY={y}
                         positionX={Math.abs((i - start) * 25) + x}
+                        estadoPrueba = {estadoPrueba}
                     />
                 )
+
+         
             }
         </g>
     )

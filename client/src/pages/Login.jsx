@@ -2,11 +2,18 @@ import { useRef, useState, useEffect} from 'react';
 import useAuth from '../hooks/useAuth';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+
 import './register.scss'
 import axios from '../axios';
 const LOGIN_URL = '/auth';
 
 const Login = () => {
+    const [values, setValues] = useState({
+        showPassword: false,
+      });
+
     const { setAuth, persist, setPersist } = useAuth()
 
     
@@ -72,6 +79,14 @@ const Login = () => {
             errRef.current.focus();
         }
     }
+    //HIDE AND SHOW PASSWORD
+    const handleClickShowPassword = () => {
+        console.log("here")
+        setValues({
+          ...values,
+          showPassword: !values.showPassword,
+        });
+      };
     //trusted device
     const togglePersist = () =>{
         setPersist(prev => !prev)
@@ -79,6 +94,7 @@ const Login = () => {
     useEffect(()=>{
         localStorage.setItem("persist", persist)
     },[persist])
+
 
     return (
         <main className="register">
@@ -99,13 +115,27 @@ const Login = () => {
                         />
 
                         <label htmlFor="password">Contraseña:</label>
-                        <input
-                            type="password"
-                            id="password"
-                            onChange={(e) => setPwd(e.target.value)}
-                            value={pwd}
-                            required
-                        />
+                        <div className='pass'>
+                            <input
+                                    type={values.showPassword ? "text" : "password"}
+                                    id="password"
+                                    onChange={(e) => setPwd(e.target.value)}
+                                    value={pwd}
+                                    required
+                            />
+                            {
+                                values.showPassword ?   
+                                <VisibilityIcon className='passIcon'
+                                   onClick={handleClickShowPassword}
+                                />
+                                :
+                                <VisibilityOffIcon className='passIcon'
+                                onClick={handleClickShowPassword}
+                                 />
+                            }                         
+                        </div>
+                    
+
                         <button>Iniciar Sesión</button>
                         <div className='persistCheck'>
                             <input 
